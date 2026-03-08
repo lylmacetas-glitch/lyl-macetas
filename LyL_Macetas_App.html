@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>LyL Macetas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sdk:#3d5c40;--sm:#7a9e7e;--sl:#b8d4ba;--sbg:#e8f0e9;
+  --cr:#f8f4ee;--crd:#ede6db;--bk:#8b6f47;--bkl:#c4a882;
+  --ink:#252520;--inl:#6b6b62;--wh:#ffffff;--w:#b83232;--wbg:#fdf0f0;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);color:var(--ink);}
+
+/* ── LAYOUT ── */
+.app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;background:var(--wh);box-shadow:0 0 40px rgba(0,0,0,.1);}
+
+/* ── HEADER ── */
+.hdr{background:var(--sdk);padding:16px 18px 0;flex-shrink:0;}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-ico{font-size:22px;}
+.brand h1{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:#fff;}
+.brand p{font-size:9px;color:var(--sl);letter-spacing:.12em;text-transform:uppercase;}
+.sync-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 11px;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;}
+.sync-btn:active{background:rgba(255,255,255,.2);}
+.nav{display:flex;}
+.nav-tab{flex:1;padding:10px 4px;text-align:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.38);cursor:pointer;border-bottom:2px solid transparent;font-weight:500;transition:all .15s;}
+.nav-tab.on{color:var(--sl);border-bottom-color:var(--sl);}
+
+/* ── VIEWS ── */
+.views{flex:1;overflow:hidden;position:relative;}
+.view{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;flex-direction:column;}
+.view.on{display:flex;}
+
+/* ── REMITO VIEW ── */
+.rem-body{padding:18px;display:flex;flex-direction:column;gap:14px;flex:1;}
+.sec-lbl{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--inl);margin-bottom:8px;}
+
+.dz{border:2px dashed rgba(61,92,64,.25);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--sbg);}
+.dz.drag{border-color:var(--sdk);background:var(--sl);}
+.dz input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
+.dz-ico{font-size:36px;margin-bottom:8px;}
+.dz h3{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--sdk);margin-bottom:4px;}
+.dz p{font-size:12px;color:var(--inl);line-height:1.5;}
+
+.ipw{border-radius:12px;overflow:hidden;position:relative;}
+.ipw img{width:100%;display:block;max-height:180px;object-fit:cover;}
+.irm{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+.status{border-radius:10px;padding:11px 14px;font-size:12px;line-height:1.5;}
+.status.ld{background:var(--sbg);color:var(--sdk);display:flex;align-items:center;gap:9px;}
+.status.ok{background:#e8f5e9;color:#2e7d32;}
+.status.er{background:var(--wbg);color:var(--w);}
+.spin{width:18px;height:18px;border:2px solid rgba(61,92,64,.2);border-top-color:var(--sdk);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.scanned-list{display:flex;flex-direction:column;gap:8px;}
+.sci{background:var(--cr);border:1px solid var(--crd);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:10px;}
+.sci-info{flex:1;}
+.sci-name{font-size:14px;font-weight:500;color:var(--ink);}
+.sci-sub{font-size:11px;color:var(--inl);margin-top:2px;}
+.sci-cost{display:flex;align-items:center;gap:6px;}
+.sci-cost input{width:90px;background:#fff;border:1.5px solid var(--crd);border-radius:8px;padding:6px 8px;font-size:13px;font-family:'DM Sans',sans-serif;text-align:right;outline:none;color:var(--ink);}
+.sci-cost input:focus{border-color:var(--sdk);}
+.sci-del{background:none;border:none;color:rgba(184,50,50,.4);cursor:pointer;font-size:16px;padding:2px;}
+.sci-del:active{color:var(--w);}
+
+.margen-row{display:flex;align-items:center;gap:10px;background:var(--sbg);border-radius:10px;padding:11px 14px;}
+.margen-row label{font-size:12px;color:var(--sdk);font-weight:500;flex:1;}
+.margen-row input{width:70px;background:#fff;border:1.5px solid var(--sl);border-radius:8px;padding:7px 9px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;text-align:right;outline:none;color:var(--ink);}
+
+/* ── BUTTONS ── */
+.btn{width:100%;background:var(--sdk);color:#fff;border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;}
+.btn:active{opacity:.85;transform:scale(.98);}
+.btn.sec{background:var(--sbg);color:var(--sdk);border:1.5px solid var(--sl);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── LISTA VIEW ── */
+.lista-body{flex:1;display:flex;flex-direction:column;}
+.lista-hdr{padding:14px 18px 10px;border-bottom:1px solid var(--crd);flex-shrink:0;}
+.search-wrap{position:relative;}
+.search-wrap input{width:100%;background:var(--cr);border:1px solid var(--crd);border-radius:10px;padding:9px 12px 9px 34px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;}
+.search-wrap input:focus{border-color:var(--sm);}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.35;pointer-events:none;}
+.plants-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.plant-row{display:flex;align-items:center;padding:13px 18px;border-bottom:1px solid var(--crd);gap:12px;cursor:pointer;transition:background .15s;}
+.plant-row:active{background:var(--sbg);}
+.plant-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-i{background:var(--sdk);}
+.dot-e{background:#a0521e;}
+.dot-a{background:linear-gradient(135deg,var(--sdk),#a0521e);}
+.dot-n{background:var(--crd);}
+.plant-info{flex:1;min-width:0;}
+.plant-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.plant-sub{font-size:11px;color:var(--inl);margin-top:1px;}
+.plant-price{text-align:right;flex-shrink:0;}
+.plant-mp{font-size:15px;font-weight:500;color:var(--sdk);}
+.plant-cant{font-size:10px;color:var(--inl);margin-top:1px;}
+.plant-actions{display:flex;gap:2px;}
+.pact{background:none;border:none;padding:5px;cursor:pointer;font-size:15px;opacity:.3;transition:opacity .15s;}
+.pact:active{opacity:1;}
+
+.lista-footer{padding:12px 18px;border-top:1px solid var(--crd);display:flex;gap:8px;flex-shrink:0;}
+.lista-footer .btn{flex:1;}
+
+.empty{text-align:center;padding:60px 20px;color:var(--inl);}
+.empty-ico{font-size:44px;opacity:.25;margin-bottom:12px;}
+.empty h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--sdk);margin-bottom:6px;}
+.empty p{font-size:12px;line-height:1.7;}
+
+/* ── ETIQUETAS VIEW ── */
+.etiq-body{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1;}
+.etiq-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(61,92,64,.1);page-break-inside:avoid;}
+.etiq-stripe{height:6px;}
+.etiq-stripe.i{background:linear-gradient(90deg,#3d5c40,#7a9e7e);}
+.etiq-stripe.e{background:linear-gradient(90deg,#a0521e,#d4854a);}
+.etiq-stripe.a{background:linear-gradient(90deg,#3d5c40,#a0521e);}
+.etiq-stripe.n{background:var(--crd);}
+.etiq-inner{padding:14px 16px 12px;}
+.etiq-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.etiq-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink);line-height:1.1;flex:1;}
+.etiq-ubi{font-size:20px;}
+.etiq-icons{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.etiq-icon{background:var(--sbg);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--sdk);display:inline-flex;align-items:center;gap:3px;}
+.etiq-icon.w{background:var(--wbg);color:var(--w);}
+.etiq-price-row{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--crd);padding-top:10px;}
+.etiq-price-lbl{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--inl);margin-bottom:2px;}
+.etiq-price-val{font-size:22px;font-weight:500;color:var(--sdk);font-family:'Cormorant Garamond',serif;}
+.etiq-brand{font-family:'Cormorant Garamond',serif;font-size:10px;color:var(--sm);letter-spacing:.12em;text-transform:uppercase;}
+.etiq-cant-badge{background:var(--sdk);color:#fff;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:500;}
+
+.etiq-footer{padding:8px 16px 12px;display:flex;gap:6px;}
+.etiq-footer .btn{font-size:12px;padding:9px;}
+
+/* ── SHARE ── */
+.share-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.share-overlay.open{display:flex;}
+.share-sheet{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:480px;}
+.share-sheet h3{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--sdk);margin-bottom:16px;text-align:center;}
+.share-opts{display:flex;gap:10px;flex-direction:column;}
+.share-opt{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--cr);border-radius:12px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;width:100%;transition:background .15s;}
+.share-opt:active{background:var(--sbg);}
+.share-opt-ico{font-size:24px;}
+.share-opt-info{text-align:left;}
+.share-opt-title{font-size:14px;font-weight:500;color:var(--ink);}
+.share-opt-sub{font-size:11px;color:var(--inl);}
+.share-cancel{margin-top:10px;width:100%;background:none;border:none;padding:12px;font-size:14px;color:var(--inl);cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:9px 20px;border-radius:30px;font-size:12px;opacity:0;transition:all .25s;pointer-events:none;z-index:300;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── PRINT ── */
+@media print{
+  .hdr,.nav,.lista-hdr,.lista-footer,.etiq-footer,.share-overlay,.toast{display:none!important;}
+  .view{position:static;display:block!important;overflow:visible;}
+  .views{overflow:visible;}
+  .etiq-card{break-inside:avoid;box-shadow:none;border:1px solid #ddd;margin-bottom:8px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="brand">
+        <span class="brand-ico">🌿</span>
+        <div><h1>LyL Macetas</h1><p>Gestión de precios</p></div>
+      </div>
+      <button class="sync-btn" onclick="syncCloud()">☁️ <span id="sync-txt">Sincronizar</span></button>
+    </div>
+    <div class="nav">
+      <div class="nav-tab on" onclick="goView('remito')">📷 Remito</div>
+      <div class="nav-tab" onclick="goView('lista')">📋 Lista</div>
+      <div class="nav-tab" onclick="goView('etiquetas')">🏷️ Etiquetas</div>
+    </div>
+  </div>
+
+  <!-- VIEWS -->
+  <div class="views">
+
+    <!-- REMITO -->
+    <div class="view on" id="v-remito">
+      <div class="rem-body">
+        <div>
+          <div class="sec-lbl">Foto del remito</div>
+          <div class="dz" id="dz">
+            <input type="file" accept="image/*" capture="environment" onchange="handleFile(event)" id="fi">
+            <div class="dz-ico">📷</div>
+            <h3>Sacar foto del remito</h3>
+            <p>Tocá acá para abrir la cámara<br>o elegir una imagen guardada</p>
+          </div>
+          <div id="ipw" style="display:none" class="ipw">
+            <img id="ipr" src="" alt="remito">
+            <button class="irm" onclick="clearRem()">✕</button>
+          </div>
+        </div>
+
+        <div id="st-wrap" style="display:none">
+          <div class="status ld" id="st"><div class="spin"></div><span>Analizando remito...</span></div>
+        </div>
+
+        <div id="sc-res" style="display:none">
+          <div class="sec-lbl">Productos detectados</div>
+          <div class="scanned-list" id="sc-list"></div>
+          <div class="margen-row" style="margin-top:4px">
+            <label>Margen de ganancia para todos</label>
+            <div style="display:flex;align-items:center;gap:4px">
+              <input type="number" id="r-mg" value="50" oninput="renderScanned()">
+              <span style="font-size:12px;color:var(--inl)">%</span>
+            </div>
+          </div>
+          <button class="btn" style="margin-top:4px" onclick="importAll()">✓ Importar y generar etiquetas</button>
+        </div>
+
+        <div id="rem-hint" style="margin-top:auto;padding-top:10px">
+          <p style="font-size:11px;color:var(--inl);text-align:center;line-height:1.6">
+            La IA lee cualquier formato de remito.<br>
+            Generá <strong>N etiquetas por cada producto</strong> según la cantidad comprada.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LISTA -->
+    <div class="view" id="v-lista">
+      <div class="lista-body">
+        <div class="lista-hdr">
+          <div class="search-wrap">
+            <span class="search-ico">🔍</span>
+            <input type="text" id="search" placeholder="Buscar planta..." oninput="renderLista()">
+          </div>
+        </div>
+        <div class="plants-list" id="plants-list"></div>
+        <div class="lista-footer">
+          <button class="btn sec" onclick="exportCSV()">📊 Excel</button>
+          <button class="btn" style="background:var(--w)" onclick="confirmClearAll()">🗑 Borrar todo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETIQUETAS -->
+    <div class="view" id="v-etiquetas">
+      <div class="etiq-body" id="etiq-body">
+        <div class="empty">
+          <div class="empty-ico">🏷️</div>
+          <h3>Sin etiquetas</h3>
+          <p>Escaneá un remito para generar etiquetas automáticamente.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SHARE SHEET -->
+<div class="share-overlay" id="share-overlay" onclick="closeShare(event)">
+  <div class="share-sheet">
+    <h3>Compartir etiquetas</h3>
+    <div class="share-opts">
+      <button class="share-opt" onclick="shareWhatsApp()">
+        <span class="share-opt-ico">💬</span>
+        <div class="share-opt-info"><div class="share-opt-title">WhatsApp</div><div class="share-opt-sub">Enviar a la imprenta</div></div>
+      </button>
+      <button class="share-opt" onclick="window.print()">
+        <span class="share-opt-ico">🖨️</span>
+        <div class="share-opt-info"><div class="share-opt-title">Imprimir</div><div class="share-opt-sub">Vista de impresión</div></div>
+      </button>
+      <button class="share-opt" onclick="shareNative()">
+        <span class="share-opt-ico">📤</span>
+        <div class="share-opt-info"><div class="share-opt-title">Compartir</div><div class="share-opt-sub">Más opciones</div></div>
+      </button>
+    </div>
+    <button class="share-cancel" onclick="document.getElementById('share-overlay').classList.remove('open')">Cancelar</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbxwHTDmu91mYVrPSfxnTl2ZUKQmYgJ_4MwnKyL7mKOvUV1AwJ00N9djJW4kNRmJCEJ2/exec';
+const SHEET_ID = '1rka_KuvNMoTJnknaiL4R6bKa5ziBouZVUlJ2-4rWOrA';
+let P = JSON.parse(localStorage.getItem('lyl_cfg')||'null')||{qr:6.29,ib:3,dt:10,md:50};
+let plants = JSON.parse(localStorage.getItem('lyl_p')||'[]');
+let scanned = [], rb64 = null;
+
+// ── INIT ──
+addEventListener('load', () => {
+  renderLista();
+  renderEtiquetas();
+});
+
+// ── NAV ──
+function goView(v) {
+  document.querySelectorAll('.nav-tab').forEach((el,i) => el.classList.toggle('on', ['remito','lista','etiquetas'][i]===v));
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  if(v==='lista') renderLista();
+  if(v==='etiquetas') renderEtiquetas();
+}
+
+// ── PRICE CALC ──
+function calc(cost, mg) {
+  if(!cost||cost<=0) return {mp:null,tr:null};
+  const f = 1 - P.qr/100 - P.ib/100;
+  const mp = Math.round(cost*(1+mg/100)/f);
+  return {mp, tr: Math.round(mp*(1-P.dt/100))};
+}
+function fmt(n) { return '$'+Number(n).toLocaleString('es-AR'); }
+
+// ── REMITO ──
+function handleFile(e) { const f=e.target.files[0]; if(f) processFile(f); }
+function processFile(file) {
+  const rd = new FileReader();
+  rd.onload = async e => {
+    const du = e.target.result;
+    rb64 = du.split(',')[1];
+    document.getElementById('ipr').src = du;
+    document.getElementById('ipw').style.display = 'block';
+    document.getElementById('dz').style.display = 'none';
+    document.getElementById('rem-hint').style.display = 'none';
+    await scanRemito();
+  };
+  rd.readAsDataURL(file);
+}
+function clearRem() {
+  rb64=null; scanned=[];
+  document.getElementById('ipw').style.display='none';
+  document.getElementById('dz').style.display='block';
+  document.getElementById('st-wrap').style.display='none';
+  document.getElementById('sc-res').style.display='none';
+  document.getElementById('rem-hint').style.display='block';
+  document.getElementById('fi').value='';
+}
+async function scanRemito() {
+  document.getElementById('st-wrap').style.display='block';
+  document.getElementById('sc-res').style.display='none';
+  setSt('ld','Analizando remito con IA...');
+  const prompt = `Sos un asistente que lee remitos de viveros y proveedores de plantas en Argentina.
+Analizá la imagen y extraé TODOS los productos con precio de costo y cantidad.
+REGLAS: precio unitario si existe; si hay total y cantidad calculá unitario=total/cantidad; sin precio usá 0.
+Devolvé SOLO JSON array sin texto ni markdown:
+[{"nombre":"Nombre limpio","costo":1234,"cantidad":3}]`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:'image/jpeg',data:rb64}},
+          {type:'text',text:prompt}
+        ]}]})
+    });
+    if(!res.ok) throw new Error('API '+res.status);
+    const data = await res.json();
+    const txt = data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
+    const items = JSON.parse(txt);
+    if(!Array.isArray(items)||!items.length) throw new Error('Sin productos');
+    scanned = items.map((it,i) => ({id:i, nombre:it.nombre||'Producto '+(i+1), costo:it.costo||0, cantidad:Math.max(1,it.cantidad||1)}));
+    setSt('ok', '✓ '+scanned.length+' producto'+(scanned.length>1?'s':'')+' detectado'+(scanned.length>1?'s':''));
+    renderScanned();
+    document.getElementById('sc-res').style.display='block';
+  } catch(err) {
+    setSt('er','⚠️ No se pudo leer. Intentá con mejor iluminación o foto más clara.');
+  }
+}
+function setSt(type, msg) {
+  const el = document.getElementById('st'); el.className='status '+type;
+  el.innerHTML = type==='ld' ? `<div class="spin"></div><span>${msg}</span>` : msg;
+}
+function renderScanned() {
+  const mg = +document.getElementById('r-mg').value||P.md;
+  document.getElementById('sc-list').innerHTML = scanned.map(it => {
+    const r = calc(it.costo, mg);
+    return `<div class="sci">
+      <div class="sci-info">
+        <div class="sci-name">${it.nombre}</div>
+        <div class="sci-sub">×${it.cantidad} unid. · MP: ${r.mp?fmt(r.mp):'sin precio'}</div>
+      </div>
+      <div class="sci-cost">
+        <input type="number" value="${it.costo||''}" placeholder="$costo" onchange="scanned[${it.id}].costo=+this.value;renderScanned()">
+        <button class="sci-del" onclick="scanned=scanned.filter(x=>x.id!==${it.id});renderScanned();if(!scanned.length)document.getElementById('sc-res').style.display='none'">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function importAll() {
+  if(!scanned.length) return;
+  const mg = +document.getElementById('r-mg').value||P.md;
+  let total = 0;
+  scanned.forEach(it => {
+    const r = calc(it.costo, mg);
+    // Crear N entradas según cantidad
+    for(let i=0; i<it.cantidad; i++) {
+      plants.push({id:Date.now()+Math.random(), nombre:it.nombre, desc:'', costo:it.costo,
+        margen:mg, mp:r.mp, tr:r.tr, ubi:null, dif:null, riego:null, luz:null, tox:[], cantidad:it.cantidad});
+    }
+    total += it.cantidad;
+  });
+  savePlants();
+  toast('✓ '+total+' etiquetas generadas');
+  clearRem();
+  goView('etiquetas');
+}
+
+// ── LISTA ──
+function renderLista() {
+  const q = (document.getElementById('search').value||'').toLowerCase();
+  // Group by nombre to show summary
+  const map = {};
+  plants.forEach(p => {
+    const k = p.nombre;
+    if(!map[k]) map[k] = {nombre:p.nombre, mp:p.mp, tr:p.tr, ubi:p.ubi, costo:p.costo, margen:p.margen, ids:[],cantidad:0};
+    map[k].ids.push(p.id);
+    map[k].cantidad++;
+  });
+  const groups = Object.values(map).filter(g => !q || g.nombre.toLowerCase().includes(q));
+  const el = document.getElementById('plants-list');
+  if(!groups.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-ico">🌿</div><h3>${q?'Sin resultados':'Sin plantas'}</h3><p>${q?'Probá con otro término':'Escaneá un remito para agregar plantas'}</p></div>`;
+    return;
+  }
+  el.innerHTML = groups.map(g => {
+    const dot = g.ubi==='interior'?'i':g.ubi==='exterior'?'e':g.ubi==='ambos'?'a':'n';
+    return `<div class="plant-row" onclick="">
+      <div class="plant-dot dot-${dot}"></div>
+      <div class="plant-info">
+        <div class="plant-name">${g.nombre}</div>
+        <div class="plant-sub">Costo: ${g.costo?fmt(g.costo):'—'} · Margen: ${g.margen?g.margen+'%':'—'}</div>
+      </div>
+      <div class="plant-price">
+        <div class="plant-mp">${g.mp?fmt(g.mp):'—'}</div>
+        <div class="plant-cant">×${g.cantidad} etiqueta${g.cantidad>1?'s':''}</div>
+      </div>
+      <div class="plant-actions">
+        <button class="pact" onclick="event.stopPropagation();delGroup('${g.nombre}')" title="Eliminar">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function delGroup(nombre) {
+  if(!confirm('¿Eliminar todas las etiquetas de "'+nombre+'"?')) return;
+  plants = plants.filter(p => p.nombre !== nombre);
+  savePlants(); renderLista(); renderEtiquetas();
+  toast('Eliminado');
+}
+function confirmClearAll() {
+  if(!plants.length) return;
+  if(!confirm('¿Borrar todas las plantas y etiquetas?')) return;
+  plants=[]; savePlants(); renderLista(); renderEtiquetas(); toast('Todo eliminado');
+}
+
+// ── ETIQUETAS ──
+const UBI={interior:{i:'🌙',t:'Interior'},exterior:{i:'☀️',t:'Exterior'},ambos:{i:'☀️🌙',t:'Ext/Int'}};
+const DIF={principiante:{i:'🌱',t:'Principiante'},normal:{i:'🌿',t:'Normal'},experto:{i:'🌳',t:'Experto'}};
+const RIE={poco:{i:'💧',t:'Poco'},moderado:{i:'💧💧',t:'Mod.'},frecuente:{i:'💧💧💧',t:'Frec.'}};
+const LZ={sol:{i:'🔆',t:'Sol'},semisombra:{i:'🌤️',t:'Semisombra'},sombra:{i:'🌑',t:'Sombra'}};
+
+function renderEtiquetas() {
+  const el = document.getElementById('etiq-body');
+  if(!plants.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-ico">🏷️</div><h3>Sin etiquetas</h3><p>Escaneá un remito para generar etiquetas automáticamente.</p></div>`;
+    return;
+  }
+  // Group and show one card per grupo con badge de cantidad
+  const map = {};
+  plants.forEach(p => {
+    if(!map[p.nombre]) map[p.nombre]={...p, cant:0};
+    map[p.nombre].cant++;
+  });
+  el.innerHTML = Object.values(map).map(p => {
+    const st = p.ubi==='exterior'?'e':p.ubi==='ambos'?'a':p.ubi==='interior'?'i':'n';
+    const ubi = p.ubi?UBI[p.ubi].i:'';
+    let icons = '';
+    if(p.dif) icons+=`<span class="etiq-icon">${DIF[p.dif].i} ${DIF[p.dif].t}</span>`;
+    if(p.riego) icons+=`<span class="etiq-icon">${RIE[p.riego].i} ${RIE[p.riego].t}</span>`;
+    if(p.luz) icons+=`<span class="etiq-icon">${LZ[p.luz].i} ${LZ[p.luz].t}</span>`;
+    if(p.tox&&p.tox.includes('gatos')) icons+=`<span class="etiq-icon w">🐱 Tóx. gatos</span>`;
+    if(p.tox&&p.tox.includes('perros')) icons+=`<span class="etiq-icon w">🐶 Tóx. perros</span>`;
+    return `<div class="etiq-card">
+      <div class="etiq-stripe ${st}"></div>
+      <div class="etiq-inner">
+        <div class="etiq-top">
+          <div class="etiq-name">${p.nombre}</div>
+          <span class="etiq-ubi">${ubi}</span>
+        </div>
+        ${icons?`<div class="etiq-icons">${icons}</div>`:''}
+        <div class="etiq-price-row">
+          <div>
+            <div class="etiq-price-lbl">Precio de lista</div>
+            <div class="etiq-price-val">${p.mp?fmt(p.mp):'—'}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="etiq-brand">LyL Macetas</div>
+            <div class="etiq-cant-badge" style="margin-top:4px">×${p.cant} etiqueta${p.cant>1?'s':''}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── SYNC CLOUD ──
+async function syncCloud() {
+  document.getElementById('sync-txt').textContent = 'Guardando...';
+  try {
+    await fetch(API_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action:'save', sheetId:SHEET_ID, plants})
+    });
+    toast('☁️ Sincronizado con Google Sheets');
+  } catch(e) {
+    toast('Error al sincronizar');
+  }
+  document.getElementById('sync-txt').textContent = 'Sincronizar';
+}
+
+// ── SHARE ──
+function openShare() { document.getElementById('share-overlay').classList.add('open'); }
+function closeShare(e) { if(e.target===document.getElementById('share-overlay')) document.getElementById('share-overlay').classList.remove('open'); }
+function shareWhatsApp() {
+  const txt = plants.reduce((acc,p,i,arr) => {
+    if(i===0||arr[i-1].nombre!==p.nombre) acc += `\n🌿 *${p.nombre}*\n   Precio: ${p.mp?fmt(p.mp):'—'}\n`;
+    return acc;
+  }, '🏷️ *Lista de etiquetas LyL Macetas*\n');
+  window.open('https://wa.me/?text='+encodeURIComponent(txt));
+  document.getElementById('share-overlay').classList.remove('open');
+}
+async function shareNative() {
+  document.getElementById('share-overlay').classList.remove('open');
+  if(navigator.share) {
+    await navigator.share({title:'LyL Macetas - Etiquetas', text:'Lista de precios LyL Macetas'});
+  } else { window.print(); }
+}
+
+// ── EXPORT CSV ──
+function exportCSV() {
+  if(!plants.length){toast('Sin datos para exportar');return;}
+  const map={};
+  plants.forEach(p=>{if(!map[p.nombre])map[p.nombre]={...p,cant:0};map[p.nombre].cant++;});
+  const rows=[['Producto','Costo $','Margen %','Precio Lista $','Cantidad etiquetas']];
+  Object.values(map).forEach(p=>rows.push([p.nombre,p.costo||'',p.margen||'',p.mp||'',p.cant]));
+  const csv='\uFEFF'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='LyL_Precios.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  toast('✓ Descargado');
+}
+
+// ── SAVE ──
+function savePlants() { localStorage.setItem('lyl_p', JSON.stringify(plants)); }
+
+// ── TOAST ──
+let tt;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2500);}
+</script>
+</body>
+</html>
