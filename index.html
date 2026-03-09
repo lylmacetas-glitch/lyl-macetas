@@ -358,7 +358,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 <div class="toast" id="toast"></div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbxwHTDmu91mYVrPSfxnTl2ZUKQmYgJ_4MwnKyL7mKOvUV1AwJ00N9djJW4kNRmJCEJ2/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwYze2pDzjeADhv05DvDdzHsqkbd6hLX6wgpL1alplB3W7HY6KPOBBI6ZSlleEOoCZB/exec';
 const SHEET_ID = '1rka_KuvNMoTJnknaiL4R6bKa5ziBouZVUlJ2-4rWOrA';
 let P = JSON.parse(localStorage.getItem('lyl_cfg')||'null')||{qr:6.29,ib:3,dt:10,md:50};
 let plants = JSON.parse(localStorage.getItem('lyl_p')||'[]');
@@ -495,36 +495,15 @@ async function scanRemito() {
   document.getElementById('st-wrap').style.display='block';
   document.getElementById('sc-res').style.display='none';
   setSt('ld','Analizando remito con IA...');
-  const prompt = `Sos un asistente experto en plantas que lee remitos de viveros en Argentina.
-Analizá la imagen y extraé TODOS los productos con precio de costo y cantidad.
-Además, para cada planta, completá sus atributos de cuidado basándote en tu conocimiento botánico.
-
-REGLAS DE PRECIO: precio unitario si existe; si hay total y cantidad calculá unitario=total/cantidad; sin precio usá 0.
-
-ATRIBUTOS (usá exactamente estos valores):
-- ubi: "interior" | "exterior" | "ambos"
-- dif: "principiante" | "normal" | "experto"  
-- riego: "poco" | "moderado" | "frecuente"
-- luz: "sol" | "semisombra" | "sombra"
-- tox: array con "gatos" y/o "perros" si es tóxica, o array vacío []
-
-Devolvé SOLO JSON array sin texto ni markdown:
-[{"nombre":"Nombre limpio","costo":1234,"cantidad":3,"ubi":"interior","dif":"principiante","riego":"poco","luz":"semisombra","tox":[]}]`;
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
-        messages:[{role:'user',content:[
-          {type:'image',source:{type:'base64',media_type:rMime,data:rb64}},
-          {type:'text',text:prompt}
-        ]}]})
+    const res = await fetch(API_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action:'scan', image:rb64})
     });
-    if(!res.ok) {
-      const errData = await res.json().catch(()=>({}));
-      throw new Error('API '+ res.status + ': ' + (errData?.error?.message||'sin detalle'));
-    }
+    if(!res.ok) throw new Error('Error '+res.status);
     const data = await res.json();
-    const txt = data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
+    const txt = (data.text||'').replace(/```json|```/g,'').trim();
     const items = JSON.parse(txt);
     if(!Array.isArray(items)||!items.length) throw new Error('Sin productos');
     scanned = items.map((it,i) => ({id:i, nombre:it.nombre||'Producto '+(i+1), costo:it.costo||0, cantidad:Math.max(1,it.cantidad||1), ubi:it.ubi||null, dif:it.dif||null, riego:it.riego||null, luz:it.luz||null, tox:it.tox||[]}));
