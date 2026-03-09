@@ -172,10 +172,14 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
         <span class="brand-ico">🌿</span>
         <div><h1>LyL Macetas</h1><p>Gestión de precios</p></div>
       </div>
-      <button class="sync-btn" onclick="syncCloud()">☁️ <span id="sync-txt">Sincronizar</span></button>
+      <div style="display:flex;gap:6px">
+        <button class="sync-btn" onclick="syncCloud()">☁️ <span id="sync-txt">Guardar</span></button>
+        <button class="sync-btn" onclick="loadCloud()">⬇️ <span id="load-txt">Cargar</span></button>
+      </div>
     </div>
     <div class="nav">
       <div class="nav-tab on" onclick="goView('remito')">📷 Remito</div>
+      <div class="nav-tab" onclick="goView('nueva')">➕ Nueva</div>
       <div class="nav-tab" onclick="goView('lista')">📋 Lista</div>
       <div class="nav-tab" onclick="goView('etiquetas')">🏷️ Etiquetas</div>
     </div>
@@ -184,13 +188,13 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
   <!-- VIEWS -->
   <div class="views">
 
-    <!-- REMITO -->
+
     <div class="view on" id="v-remito">
       <div class="rem-body">
         <div>
           <div class="sec-lbl">Foto del remito</div>
           <div class="dz" id="dz">
-            <input type="file" accept="image/*" capture="environment" onchange="handleFile(event)" id="fi">
+            <input type="file" accept="image/*" onchange="handleFile(event)" id="fi">
             <div class="dz-ico">📷</div>
             <h3>Sacar foto del remito</h3>
             <p>Tocá acá para abrir la cámara<br>o elegir una imagen guardada</p>
@@ -224,6 +228,69 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
             Generá <strong>N etiquetas por cada producto</strong> según la cantidad comprada.
           </p>
         </div>
+      </div>
+    </div>
+
+    <!-- NUEVA -->
+    <div class="view" id="v-nueva">
+      <div class="rem-body">
+        <div>
+          <div class="sec-lbl">Modo de carga</div>
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <button id="modo-precio" onclick="setModo('precio')" style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--sdk);background:var(--sdk);color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;">Solo precio final</button>
+            <button id="modo-costo" onclick="setModo('costo')" style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--sl);background:#fff;color:var(--sdk);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;">Costo + margen</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="sec-lbl">Datos de la planta</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <input id="n-nombre" type="text" placeholder="Nombre de la planta *" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" onfocus="this.style.borderColor='var(--sdk)'" onblur="this.style.borderColor='var(--crd)'">
+            
+            <div id="wrap-precio-final">
+              <div style="display:flex;gap:8px">
+                <div style="flex:1;position:relative">
+                  <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--inl);font-size:13px">$</span>
+                  <input id="n-mp" type="number" placeholder="Precio MP/QR *" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" onfocus="this.style.borderColor='var(--sdk)'" onblur="this.style.borderColor='var(--crd)'" oninput="calcDesdeMP()">
+                </div>
+                <div style="flex:1;position:relative">
+                  <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--inl);font-size:13px">$</span>
+                  <input id="n-tr" type="number" placeholder="Precio transferencia" style="width:100%;background:var(--sbg);border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--inl);outline:none;" readonly>
+                </div>
+              </div>
+              <p style="font-size:10px;color:var(--inl);margin-top:5px;padding:0 2px">El precio de transferencia se calcula automáticamente con el descuento configurado.</p>
+            </div>
+
+            <div id="wrap-costo" style="display:none;gap:8px;flex-direction:column">
+              <div style="display:flex;gap:8px">
+                <div style="flex:1;position:relative">
+                  <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--inl);font-size:13px">$</span>
+                  <input id="n-costo" type="number" placeholder="Costo" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" onfocus="this.style.borderColor='var(--sdk)'" onblur="this.style.borderColor='var(--crd)'" oninput="calcDesdeCosto()">
+                </div>
+                <div style="flex:1;position:relative">
+                  <input id="n-mg" type="number" placeholder="Margen %" value="50" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" onfocus="this.style.borderColor='var(--sdk)'" onblur="this.style.borderColor='var(--crd)'" oninput="calcDesdeCosto()">
+                </div>
+              </div>
+              <div style="display:flex;gap:8px">
+                <div style="flex:1;background:var(--sbg);border-radius:10px;padding:10px 13px;text-align:center">
+                  <div style="font-size:9px;color:var(--inl);text-transform:uppercase;letter-spacing:.08em">Precio MP</div>
+                  <div id="n-res-mp" style="font-size:16px;font-weight:500;color:var(--sdk);font-family:'Cormorant Garamond',serif">—</div>
+                </div>
+                <div style="flex:1;background:var(--sbg);border-radius:10px;padding:10px 13px;text-align:center">
+                  <div style="font-size:9px;color:var(--inl);text-transform:uppercase;letter-spacing:.08em">Transferencia</div>
+                  <div id="n-res-tr" style="font-size:16px;font-weight:500;color:var(--sdk);font-family:'Cormorant Garamond',serif">—</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;background:var(--sbg);border-radius:10px;padding:10px 13px">
+              <label style="font-size:12px;color:var(--sdk);font-weight:500;flex:1">Cantidad de etiquetas</label>
+              <input id="n-cant" type="number" value="1" min="1" style="width:60px;background:#fff;border:1.5px solid var(--sl);border-radius:8px;padding:7px 9px;font-size:14px;font-family:'DM Sans',sans-serif;text-align:center;outline:none;color:var(--ink);">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn" onclick="addManual()">✓ Agregar planta</button>
       </div>
     </div>
 
@@ -297,11 +364,71 @@ addEventListener('load', () => {
 
 // ── NAV ──
 function goView(v) {
-  document.querySelectorAll('.nav-tab').forEach((el,i) => el.classList.toggle('on', ['remito','lista','etiquetas'][i]===v));
+  document.querySelectorAll('.nav-tab').forEach((el,i) => el.classList.toggle('on', ['remito','nueva','lista','etiquetas'][i]===v));
   document.querySelectorAll('.view').forEach(el => el.classList.remove('on'));
   document.getElementById('v-'+v).classList.add('on');
   if(v==='lista') renderLista();
   if(v==='etiquetas') renderEtiquetas();
+}
+
+let modoActual = 'precio';
+function setModo(m) {
+  modoActual = m;
+  document.getElementById('wrap-precio-final').style.display = m==='precio'?'block':'none';
+  document.getElementById('wrap-costo').style.display = m==='costo'?'flex':'none';
+  document.getElementById('modo-precio').style.background = m==='precio'?'var(--sdk)':'#fff';
+  document.getElementById('modo-precio').style.color = m==='precio'?'#fff':'var(--sdk)';
+  document.getElementById('modo-precio').style.borderColor = m==='precio'?'var(--sdk)':'var(--sl)';
+  document.getElementById('modo-costo').style.background = m==='costo'?'var(--sdk)':'#fff';
+  document.getElementById('modo-costo').style.color = m==='costo'?'#fff':'var(--sdk)';
+  document.getElementById('modo-costo').style.borderColor = m==='costo'?'var(--sdk)':'var(--sl)';
+}
+function calcDesdeMP() {
+  const mp = +document.getElementById('n-mp').value;
+  if(mp>0) document.getElementById('n-tr').value = Math.round(mp*(1-P.dt/100));
+  else document.getElementById('n-tr').value = '';
+}
+function calcDesdeCosto() {
+  const costo = +document.getElementById('n-costo').value;
+  const mg = +document.getElementById('n-mg').value||P.md;
+  if(costo>0) {
+    const r = calc(costo, mg);
+    document.getElementById('n-res-mp').textContent = r.mp?fmt(r.mp):'—';
+    document.getElementById('n-res-tr').textContent = r.tr?fmt(r.tr):'—';
+  } else {
+    document.getElementById('n-res-mp').textContent = '—';
+    document.getElementById('n-res-tr').textContent = '—';
+  }
+}
+function addManual() {
+  const nombre = document.getElementById('n-nombre').value.trim();
+  if(!nombre) { toast('⚠️ Ingresá el nombre de la planta'); return; }
+  const cant = +document.getElementById('n-cant').value||1;
+  let mp=0, tr=0, costo=0, margen=P.md;
+  if(modoActual==='precio') {
+    mp = +document.getElementById('n-mp').value||0;
+    tr = +document.getElementById('n-tr').value||Math.round(mp*(1-P.dt/100));
+    if(!mp) { toast('⚠️ Ingresá el precio de lista'); return; }
+  } else {
+    costo = +document.getElementById('n-costo').value||0;
+    margen = +document.getElementById('n-mg').value||P.md;
+    if(!costo) { toast('⚠️ Ingresá el costo'); return; }
+    const r = calc(costo, margen);
+    mp = r.mp; tr = r.tr;
+  }
+  for(let i=0; i<cant; i++) {
+    plants.push({id:Date.now()+Math.random(), nombre, desc:'', costo, margen, mp, tr, ubi:null, dif:null, riego:null, luz:null, tox:[], cantidad:cant});
+  }
+  savePlants();
+  toast('✓ '+cant+' etiqueta'+(cant>1?'s':'')+' de "'+nombre+'" agregada'+(cant>1?'s':''));
+  // Limpiar form
+  document.getElementById('n-nombre').value='';
+  document.getElementById('n-mp').value='';
+  document.getElementById('n-tr').value='';
+  document.getElementById('n-costo').value='';
+  document.getElementById('n-res-mp').textContent='—';
+  document.getElementById('n-res-tr').textContent='—';
+  document.getElementById('n-cant').value='1';
 }
 
 // ── PRICE CALC ──
@@ -341,11 +468,21 @@ async function scanRemito() {
   document.getElementById('st-wrap').style.display='block';
   document.getElementById('sc-res').style.display='none';
   setSt('ld','Analizando remito con IA...');
-  const prompt = `Sos un asistente que lee remitos de viveros y proveedores de plantas en Argentina.
+  const prompt = `Sos un asistente experto en plantas que lee remitos de viveros en Argentina.
 Analizá la imagen y extraé TODOS los productos con precio de costo y cantidad.
-REGLAS: precio unitario si existe; si hay total y cantidad calculá unitario=total/cantidad; sin precio usá 0.
+Además, para cada planta, completá sus atributos de cuidado basándote en tu conocimiento botánico.
+
+REGLAS DE PRECIO: precio unitario si existe; si hay total y cantidad calculá unitario=total/cantidad; sin precio usá 0.
+
+ATRIBUTOS (usá exactamente estos valores):
+- ubi: "interior" | "exterior" | "ambos"
+- dif: "principiante" | "normal" | "experto"  
+- riego: "poco" | "moderado" | "frecuente"
+- luz: "sol" | "semisombra" | "sombra"
+- tox: array con "gatos" y/o "perros" si es tóxica, o array vacío []
+
 Devolvé SOLO JSON array sin texto ni markdown:
-[{"nombre":"Nombre limpio","costo":1234,"cantidad":3}]`;
+[{"nombre":"Nombre limpio","costo":1234,"cantidad":3,"ubi":"interior","dif":"principiante","riego":"poco","luz":"semisombra","tox":[]}]`;
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -360,7 +497,7 @@ Devolvé SOLO JSON array sin texto ni markdown:
     const txt = data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
     const items = JSON.parse(txt);
     if(!Array.isArray(items)||!items.length) throw new Error('Sin productos');
-    scanned = items.map((it,i) => ({id:i, nombre:it.nombre||'Producto '+(i+1), costo:it.costo||0, cantidad:Math.max(1,it.cantidad||1)}));
+    scanned = items.map((it,i) => ({id:i, nombre:it.nombre||'Producto '+(i+1), costo:it.costo||0, cantidad:Math.max(1,it.cantidad||1), ubi:it.ubi||null, dif:it.dif||null, riego:it.riego||null, luz:it.luz||null, tox:it.tox||[]}));
     setSt('ok', '✓ '+scanned.length+' producto'+(scanned.length>1?'s':'')+' detectado'+(scanned.length>1?'s':''));
     renderScanned();
     document.getElementById('sc-res').style.display='block';
@@ -379,7 +516,7 @@ function renderScanned() {
     return `<div class="sci">
       <div class="sci-info">
         <div class="sci-name">${it.nombre}</div>
-        <div class="sci-sub">×${it.cantidad} unid. · MP: ${r.mp?fmt(r.mp):'sin precio'}</div>
+        <div class="sci-sub">×${it.cantidad} unid. · MP: ${r.mp?fmt(r.mp):'sin precio'} · ${[it.ubi,it.dif,it.riego].filter(Boolean).join(' · ')||'sin atributos'}</div>
       </div>
       <div class="sci-cost">
         <input type="number" value="${it.costo||''}" placeholder="$costo" onchange="scanned[${it.id}].costo=+this.value;renderScanned()">
@@ -397,7 +534,7 @@ function importAll() {
     // Crear N entradas según cantidad
     for(let i=0; i<it.cantidad; i++) {
       plants.push({id:Date.now()+Math.random(), nombre:it.nombre, desc:'', costo:it.costo,
-        margen:mg, mp:r.mp, tr:r.tr, ubi:null, dif:null, riego:null, luz:null, tox:[], cantidad:it.cantidad});
+        margen:mg, mp:r.mp, tr:r.tr, ubi:it.ubi||null, dif:it.dif||null, riego:it.riego||null, luz:it.luz||null, tox:it.tox||[], cantidad:it.cantidad});
     }
     total += it.cantidad;
   });
@@ -518,6 +655,43 @@ async function syncCloud() {
     toast('Error al sincronizar');
   }
   document.getElementById('sync-txt').textContent = 'Sincronizar';
+}
+
+async function loadCloud() {
+  document.getElementById('load-txt').textContent = 'Cargando...';
+  try {
+    const res = await fetch(API_URL + '?sheetId=' + SHEET_ID, {mode:'cors'});
+    const rows = await res.json();
+    if(!Array.isArray(rows)||rows.length<2){toast('Sin datos en la nube');return;}
+    const headers = rows[0];
+    const loaded = rows.slice(1).map(r => {
+      const o={};
+      headers.forEach((h,i)=>o[h]=r[i]);
+      return {
+        id: o.id||Date.now()+Math.random(),
+        nombre: o.nombre||'',
+        desc: o.desc||'',
+        costo: +o.costo||0,
+        margen: +o.margen||0,
+        mp: +o.mp||0,
+        tr: +o.tr||0,
+        ubi: o.ubi||null,
+        dif: o.dif||null,
+        riego: o.riego||null,
+        luz: o.luz||null,
+        tox: o.tox?o.tox.split(',').filter(Boolean):[],
+        cantidad: +o.cantidad||1
+      };
+    });
+    plants = loaded;
+    savePlants();
+    renderLista();
+    renderEtiquetas();
+    toast('✓ '+plants.length+' plantas cargadas desde la nube');
+  } catch(e) {
+    toast('Error al cargar. Intentá de nuevo.');
+  }
+  document.getElementById('load-txt').textContent = 'Cargar';
 }
 
 // ── SHARE ──
