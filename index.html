@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -519,7 +519,10 @@ Devolvé SOLO JSON array sin texto ni markdown:
           {type:'text',text:prompt}
         ]}]})
     });
-    if(!res.ok) throw new Error('API '+res.status);
+    if(!res.ok) {
+      const errData = await res.json().catch(()=>({}));
+      throw new Error('API '+ res.status + ': ' + (errData?.error?.message||'sin detalle'));
+    }
     const data = await res.json();
     const txt = data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
     const items = JSON.parse(txt);
@@ -529,7 +532,7 @@ Devolvé SOLO JSON array sin texto ni markdown:
     renderScanned();
     document.getElementById('sc-res').style.display='block';
   } catch(err) {
-    setSt('er','⚠️ No se pudo leer. Intentá con mejor iluminación o foto más clara.');
+    setSt('er','⚠️ Error: '+err.message);
   }
 }
 function setSt(type, msg) {
