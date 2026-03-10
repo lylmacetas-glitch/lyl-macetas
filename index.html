@@ -23,7 +23,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .sync-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 11px;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;}
 .sync-btn:active{background:rgba(255,255,255,.2);}
 .nav{display:flex;}
-.nav-tab{flex:1;padding:10px 4px;text-align:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.38);cursor:pointer;border-bottom:2px solid transparent;font-weight:500;transition:all .15s;}
+.nav-tab{flex:1;padding:10px 2px;text-align:center;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.38);cursor:pointer;border-bottom:2px solid transparent;font-weight:500;transition:all .15s;}
 .nav-tab.on{color:var(--sl);border-bottom-color:var(--sl);}
 .views{flex:1;overflow:hidden;position:relative;}
 .view{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;flex-direction:column;}
@@ -31,7 +31,6 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .rem-body{padding:18px;display:flex;flex-direction:column;gap:14px;flex:1;}
 .sec-lbl{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--inl);margin-bottom:8px;}
 .dz{border:2px dashed rgba(61,92,64,.25);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--sbg);}
-.dz input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
 .dz-ico{font-size:36px;margin-bottom:8px;}
 .dz h3{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--sdk);margin-bottom:4px;}
 .dz p{font-size:12px;color:var(--inl);line-height:1.5;}
@@ -45,15 +44,24 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .spin{width:18px;height:18px;border:2px solid rgba(61,92,64,.2);border-top-color:var(--sdk);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .scanned-list{display:flex;flex-direction:column;gap:8px;}
-.sci{background:var(--cr);border:1px solid var(--crd);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:10px;}
+
+/* Tarjeta de producto escaneado — mejorada */
+.sci{background:var(--cr);border:1px solid var(--crd);border-radius:12px;padding:12px 13px;display:flex;flex-direction:column;gap:8px;}
+.sci-top{display:flex;align-items:center;gap:8px;}
 .sci-info{flex:1;}
-.sci-name{font-size:14px;font-weight:500;color:var(--ink);}
-.sci-sub{font-size:11px;color:var(--inl);margin-top:2px;}
-.sci-cost{display:flex;align-items:center;gap:6px;}
-.sci-cost input{width:90px;background:#fff;border:1.5px solid var(--crd);border-radius:8px;padding:6px 8px;font-size:13px;font-family:'DM Sans',sans-serif;text-align:right;outline:none;color:var(--ink);}
-.sci-cost input:focus{border-color:var(--sdk);}
-.sci-del{background:none;border:none;color:rgba(184,50,50,.4);cursor:pointer;font-size:16px;padding:2px;}
+.sci-name-input{width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:8px;padding:6px 9px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:500;color:var(--ink);outline:none;}
+.sci-name-input:focus{border-color:var(--sdk);}
+.sci-sub{font-size:11px;color:var(--inl);margin-top:3px;}
+.sci-del{background:none;border:none;color:rgba(184,50,50,.4);cursor:pointer;font-size:18px;padding:2px;flex-shrink:0;}
 .sci-del:active{color:var(--w);}
+.sci-bottom{display:flex;gap:8px;align-items:center;}
+.sci-bottom label{font-size:11px;color:var(--inl);}
+.sci-cost-input{width:85px;background:#fff;border:1.5px solid var(--crd);border-radius:8px;padding:6px 8px;font-size:13px;font-family:'DM Sans',sans-serif;text-align:right;outline:none;color:var(--ink);}
+.sci-cost-input:focus{border-color:var(--sdk);}
+.sci-mg-input{width:65px;background:#fff;border:1.5px solid var(--crd);border-radius:8px;padding:6px 8px;font-size:13px;font-family:'DM Sans',sans-serif;text-align:right;outline:none;color:var(--ink);}
+.sci-mg-input:focus{border-color:var(--sdk);}
+.sci-precio{font-size:13px;font-weight:500;color:var(--sdk);margin-left:auto;}
+
 .margen-row{display:flex;align-items:center;gap:10px;background:var(--sbg);border-radius:10px;padding:11px 14px;}
 .margen-row label{font-size:12px;color:var(--sdk);font-weight:500;flex:1;}
 .margen-row input{width:70px;background:#fff;border:1.5px solid var(--sl);border-radius:8px;padding:7px 9px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;text-align:right;outline:none;color:var(--ink);}
@@ -90,6 +98,8 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .empty-ico{font-size:44px;opacity:.25;margin-bottom:12px;}
 .empty h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--sdk);margin-bottom:6px;}
 .empty p{font-size:12px;line-height:1.7;}
+
+/* ── ETIQUETAS ── */
 .etiq-body{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1;}
 .etiq-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(61,92,64,.1);}
 .etiq-stripe{height:6px;}
@@ -111,6 +121,8 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .etiq-cant-badge{background:var(--sdk);color:#fff;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:500;}
 .etiq-footer{padding:8px 16px 12px;display:flex;gap:6px;}
 .etiq-footer .btn{font-size:12px;padding:9px;}
+
+/* ── SHARE ── */
 .share-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center;}
 .share-overlay.open{display:flex;}
 .share-sheet{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:480px;}
@@ -123,10 +135,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .share-opt-title{font-size:14px;font-weight:500;color:var(--ink);}
 .share-opt-sub{font-size:11px;color:var(--inl);}
 .share-cancel{margin-top:10px;width:100%;background:none;border:none;padding:12px;font-size:14px;color:var(--inl);cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ── TOAST ── */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:9px 20px;border-radius:30px;font-size:12px;opacity:0;transition:all .25s;pointer-events:none;z-index:300;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* CONFIG VIEW */
+/* ── CONFIG ── */
 .cfg-body{padding:18px;display:flex;flex-direction:column;gap:16px;}
 .cfg-card{background:var(--sbg);border-radius:14px;padding:16px;}
 .cfg-card h3{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--sdk);margin-bottom:4px;}
@@ -137,11 +151,15 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .key-ok{color:#2e7d32;}
 .key-no{color:var(--w);}
 
+/* ── PRINT ── */
 @media print{
-  .hdr,.nav,.lista-hdr,.lista-footer,.etiq-footer,.share-overlay,.toast{display:none!important;}
-  .view{position:static;display:block!important;overflow:visible;}
-  .views{overflow:visible;}
-  .etiq-card{break-inside:avoid;box-shadow:none;border:1px solid #ddd;margin-bottom:8px;}
+  .hdr,.nav,.lista-hdr,.lista-footer,.etiq-footer,.share-overlay,.toast,.app{display:block!important;box-shadow:none!important;}
+  .views,.view{position:static!important;display:block!important;overflow:visible!important;height:auto!important;}
+  .view:not(#v-etiquetas){display:none!important;}
+  #v-etiquetas{display:block!important;}
+  .etiq-body{display:block!important;}
+  .etiq-card{break-inside:avoid;page-break-inside:avoid;box-shadow:none!important;border:1px solid #ccc;margin-bottom:10px;width:9cm;display:inline-block;vertical-align:top;margin-right:5mm;}
+  .etiq-footer{display:none!important;}
 }
 </style>
 </head>
@@ -162,7 +180,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
       <div class="nav-tab on" onclick="goView('remito')">📷 Remito</div>
       <div class="nav-tab" onclick="goView('nueva')">➕ Nueva</div>
       <div class="nav-tab" onclick="goView('lista')">📋 Lista</div>
-      <div class="nav-tab" onclick="goView('etiquetas')">🏷️ Etiquetas</div>
+      <div class="nav-tab" onclick="goView('etiquetas')">🏷️ Etiq.</div>
       <div class="nav-tab" onclick="goView('config')">⚙️ Config</div>
     </div>
   </div>
@@ -175,12 +193,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
         <div>
           <div class="sec-lbl">Foto del remito</div>
           <div style="display:flex;gap:10px">
-            <div class="dz" id="dz" style="flex:1;position:relative;cursor:pointer" onclick="document.getElementById('fi-cam').click()">
+            <div class="dz" id="dz" style="flex:1;cursor:pointer" onclick="document.getElementById('fi-cam').click()">
               <div class="dz-ico">📷</div>
               <h3 style="font-size:15px">Cámara</h3>
               <p style="font-size:11px">Sacar foto ahora</p>
             </div>
-            <div class="dz" id="dz2" style="flex:1;position:relative;cursor:pointer" onclick="document.getElementById('fi-gal').click()">
+            <div class="dz" id="dz2" style="flex:1;cursor:pointer" onclick="document.getElementById('fi-gal').click()">
               <div class="dz-ico">🖼️</div>
               <h3 style="font-size:15px">Galería</h3>
               <p style="font-size:11px">Elegir imagen guardada</p>
@@ -199,12 +217,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
         </div>
 
         <div id="sc-res" style="display:none">
-          <div class="sec-lbl">Productos detectados</div>
+          <div class="sec-lbl">Productos detectados — podés editar nombre, costo y margen de cada uno</div>
           <div class="scanned-list" id="sc-list"></div>
           <div class="margen-row" style="margin-top:4px">
-            <label>Margen de ganancia para todos</label>
+            <label>Margen general para todos</label>
             <div style="display:flex;align-items:center;gap:4px">
-              <input type="number" id="r-mg" value="50" oninput="renderScanned()">
+              <input type="number" id="r-mg" value="50" oninput="applyGlobalMargen()">
               <span style="font-size:12px;color:var(--inl)">%</span>
             </div>
           </div>
@@ -214,7 +232,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
         <div id="rem-hint" style="margin-top:auto;padding-top:10px">
           <p style="font-size:11px;color:var(--inl);text-align:center;line-height:1.6">
             La IA lee cualquier formato de remito.<br>
-            Generá <strong>N etiquetas por cada producto</strong> según la cantidad comprada.
+            Podés editar el nombre y margen de cada planta individualmente.
           </p>
         </div>
       </div>
@@ -238,11 +256,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
               <div style="display:flex;gap:8px">
                 <div style="flex:1;position:relative">
                   <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--inl);font-size:13px">$</span>
-                  <input id="n-mp" type="number" placeholder="Precio MP/QR *" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" onfocus="this.style.borderColor='var(--sdk)'" onblur="this.style.borderColor='var(--crd)'" oninput="calcDesdeMP()">
+                  <input id="n-mp" type="number" placeholder="Precio lista *" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" oninput="calcDesdeMP()">
                 </div>
                 <div style="flex:1;position:relative">
                   <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--inl);font-size:13px">$</span>
-                  <input id="n-tr" type="number" placeholder="Precio transferencia" style="width:100%;background:var(--sbg);border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--inl);outline:none;" readonly>
+                  <input id="n-tr" type="number" placeholder="Transferencia" style="width:100%;background:var(--sbg);border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--inl);outline:none;" readonly>
                 </div>
               </div>
             </div>
@@ -250,7 +268,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
               <div style="display:flex;gap:8px">
                 <div style="flex:1;position:relative">
                   <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--inl);font-size:13px">$</span>
-                  <input id="n-costo" type="number" placeholder="Costo" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" onfocus="this.style.borderColor='var(--sdk)'" onblur="this.style.borderColor='var(--crd)'" oninput="calcDesdeCosto()">
+                  <input id="n-costo" type="number" placeholder="Costo" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px 11px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" oninput="calcDesdeCosto()">
                 </div>
                 <div style="flex:1">
                   <input id="n-mg" type="number" placeholder="Margen %" value="50" style="width:100%;background:#fff;border:1.5px solid var(--crd);border-radius:10px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;" oninput="calcDesdeCosto()">
@@ -258,7 +276,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
               </div>
               <div style="display:flex;gap:8px">
                 <div style="flex:1;background:var(--sbg);border-radius:10px;padding:10px 13px;text-align:center">
-                  <div style="font-size:9px;color:var(--inl);text-transform:uppercase;letter-spacing:.08em">Precio MP</div>
+                  <div style="font-size:9px;color:var(--inl);text-transform:uppercase;letter-spacing:.08em">Precio lista</div>
                   <div id="n-res-mp" style="font-size:16px;font-weight:500;color:var(--sdk);font-family:'Cormorant Garamond',serif">—</div>
                 </div>
                 <div style="flex:1;background:var(--sbg);border-radius:10px;padding:10px 13px;text-align:center">
@@ -296,13 +314,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 
     <!-- ETIQUETAS -->
     <div class="view" id="v-etiquetas">
-      <div class="etiq-body" id="etiq-body">
-        <div class="empty">
-          <div class="empty-ico">🏷️</div>
-          <h3>Sin etiquetas</h3>
-          <p>Escaneá un remito para generar etiquetas automáticamente.</p>
-        </div>
-      </div>
+      <div class="etiq-body" id="etiq-body"></div>
       <div class="etiq-footer">
         <button class="btn" onclick="openShare()">📤 Compartir / Imprimir</button>
       </div>
@@ -313,13 +325,13 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
       <div class="cfg-body">
         <div class="cfg-card">
           <h3>🔑 API Key de Anthropic</h3>
-          <p>Pegá tu API key acá. Se guarda solo en tu celular y nunca se comparte con nadie.</p>
+          <p>Pegá tu API key acá. Se guarda solo en tu celular.</p>
           <input type="password" class="cfg-input" id="api-key-input" placeholder="sk-ant-api03-..." oninput="saveKey()">
           <div class="key-status" id="key-status"></div>
         </div>
         <div class="cfg-card">
           <h3>💰 Configuración de precios</h3>
-          <p>Ajustá los porcentajes para el cálculo automático de precios.</p>
+          <p>Ajustá los porcentajes para el cálculo automático.</p>
           <div style="display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;align-items:center;gap:10px">
               <label style="flex:1;font-size:12px;color:var(--sdk)">Comisión MercadoPago (%)</label>
@@ -339,11 +351,6 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
             </div>
           </div>
         </div>
-        <div class="cfg-card">
-          <h3>☁️ Google Sheets (opcional)</h3>
-          <p>ID de tu planilla de Google para guardar en la nube. Dejalo vacío si no lo usás.</p>
-          <input type="text" class="cfg-input" id="cfg-sheet" placeholder="ID de la planilla..." oninput="saveCfg()">
-        </div>
       </div>
     </div>
 
@@ -357,15 +364,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
     <div class="share-opts">
       <button class="share-opt" onclick="shareWhatsApp()">
         <span class="share-opt-ico">💬</span>
-        <div class="share-opt-info"><div class="share-opt-title">WhatsApp</div><div class="share-opt-sub">Enviar a la imprenta</div></div>
+        <div class="share-opt-info"><div class="share-opt-title">WhatsApp</div><div class="share-opt-sub">Lista de precios resumida</div></div>
       </button>
-      <button class="share-opt" onclick="window.print()">
+      <button class="share-opt" onclick="printEtiquetas()">
         <span class="share-opt-ico">🖨️</span>
-        <div class="share-opt-info"><div class="share-opt-title">Imprimir</div><div class="share-opt-sub">Vista de impresión</div></div>
-      </button>
-      <button class="share-opt" onclick="shareNative()">
-        <span class="share-opt-ico">📤</span>
-        <div class="share-opt-info"><div class="share-opt-title">Compartir</div><div class="share-opt-sub">Más opciones</div></div>
+        <div class="share-opt-info"><div class="share-opt-title">Imprimir etiquetas</div><div class="share-opt-sub">Vista optimizada para impresión</div></div>
       </button>
     </div>
     <button class="share-cancel" onclick="document.getElementById('share-overlay').classList.remove('open')">Cancelar</button>
@@ -375,12 +378,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ──
 let P = JSON.parse(localStorage.getItem('lyl_cfg')||'null')||{qr:6.29,ib:3,dt:10,md:50};
 let plants = JSON.parse(localStorage.getItem('lyl_p')||'[]');
 let scanned = [], rb64 = null;
-const SHEET_ID = localStorage.getItem('lyl_sheet')||'1rka_KuvNMoTJnknaiL4R6bKa5ziBouZVUlJ2-4rWOrA';
 const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzQUHwLhSQ8K47H4LVJ21HuNH6-Pwx3_nijgmUu1YwQ0DNUgFYIBcyGcI1I5uVoGgQn/exec';
+const SHEET_ID = '1rka_KuvNMoTJnknaiL4R6bKa5ziBouZVUlJ2-4rWOrA';
 
 function getKey() { return localStorage.getItem('lyl_apikey')||''; }
 
@@ -397,25 +399,19 @@ function loadCfgUI() {
   document.getElementById('cfg-ib').value = P.ib;
   document.getElementById('cfg-dt').value = P.dt;
   document.getElementById('cfg-md').value = P.md;
-  document.getElementById('cfg-sheet').value = localStorage.getItem('lyl_sheet')||'';
 }
 
 function saveKey() {
-  const k = document.getElementById('api-key-input').value.trim();
-  localStorage.setItem('lyl_apikey', k);
+  localStorage.setItem('lyl_apikey', document.getElementById('api-key-input').value.trim());
   updateKeyStatus();
 }
 
 function updateKeyStatus() {
   const k = getKey();
   const el = document.getElementById('key-status');
-  if(k && k.startsWith('sk-ant')) {
-    el.innerHTML = '<span class="key-ok">✓ API key guardada correctamente</span>';
-  } else if(k) {
-    el.innerHTML = '<span class="key-no">⚠️ La key no parece válida</span>';
-  } else {
-    el.innerHTML = '<span class="key-no">⚠️ Sin API key — el escaneo no funcionará</span>';
-  }
+  if(k && k.startsWith('sk-ant')) el.innerHTML = '<span class="key-ok">✓ API key guardada</span>';
+  else if(k) el.innerHTML = '<span class="key-no">⚠️ La key no parece válida</span>';
+  else el.innerHTML = '<span class="key-no">⚠️ Sin API key — el escaneo no funcionará</span>';
 }
 
 function saveCfg() {
@@ -426,8 +422,6 @@ function saveCfg() {
     md: +document.getElementById('cfg-md').value||50
   };
   localStorage.setItem('lyl_cfg', JSON.stringify(P));
-  const sheet = document.getElementById('cfg-sheet').value.trim();
-  if(sheet) localStorage.setItem('lyl_sheet', sheet);
 }
 
 // ── NAV ──
@@ -444,16 +438,13 @@ function setModo(m) {
   modoActual = m;
   document.getElementById('wrap-precio-final').style.display = m==='precio'?'block':'none';
   document.getElementById('wrap-costo').style.display = m==='costo'?'flex':'none';
-  document.getElementById('modo-precio').style.background = m==='precio'?'var(--sdk)':'#fff';
-  document.getElementById('modo-precio').style.color = m==='precio'?'#fff':'var(--sdk)';
-  document.getElementById('modo-costo').style.background = m==='costo'?'var(--sdk)':'#fff';
-  document.getElementById('modo-costo').style.color = m==='costo'?'#fff':'var(--sdk)';
+  document.getElementById('modo-precio').style.cssText += m==='precio'?';background:var(--sdk);color:#fff':';background:#fff;color:var(--sdk)';
+  document.getElementById('modo-costo').style.cssText += m==='costo'?';background:var(--sdk);color:#fff':';background:#fff;color:var(--sdk)';
 }
 
 function calcDesdeMP() {
   const mp = +document.getElementById('n-mp').value;
-  if(mp>0) document.getElementById('n-tr').value = Math.round(mp*(1-P.dt/100));
-  else document.getElementById('n-tr').value = '';
+  document.getElementById('n-tr').value = mp>0 ? Math.round(mp*(1-P.dt/100)) : '';
 }
 
 function calcDesdeCosto() {
@@ -479,12 +470,9 @@ function addManual() {
     costo = +document.getElementById('n-costo').value||0;
     margen = +document.getElementById('n-mg').value||P.md;
     if(!costo) { toast('⚠️ Ingresá el costo'); return; }
-    const r = calc(costo, margen);
-    mp = r.mp; tr = r.tr;
+    const r = calc(costo, margen); mp = r.mp; tr = r.tr;
   }
-  for(let i=0; i<cant; i++) {
-    plants.push({id:Date.now()+Math.random(), nombre, desc:'', costo, margen, mp, tr, ubi:null, dif:null, riego:null, luz:null, tox:[], cantidad:cant});
-  }
+  for(let i=0; i<cant; i++) plants.push({id:Date.now()+Math.random(), nombre, desc:'', costo, margen, mp, tr, ubi:null, dif:null, riego:null, luz:null, tox:[], cantidad:cant});
   savePlants();
   toast('✓ '+cant+' etiqueta'+(cant>1?'s':'')+' de "'+nombre+'" agregada'+(cant>1?'s':''));
   document.getElementById('n-nombre').value='';
@@ -515,12 +503,9 @@ function processFile(file) {
       const canvas = document.createElement('canvas');
       const MAX = 1600;
       let w = img.width, h = img.height;
-      if(w > MAX || h > MAX) {
-        if(w > h) { h = Math.round(h*MAX/w); w = MAX; }
-        else { w = Math.round(w*MAX/h); h = MAX; }
-      }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      if(w>MAX||h>MAX) { if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;} }
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
       const du = canvas.toDataURL('image/jpeg', 0.92);
       rb64 = du.split(',')[1];
       document.getElementById('ipr').src = du;
@@ -549,19 +534,14 @@ function clearRem() {
 
 async function scanRemito() {
   const apiKey = getKey();
-  if(!apiKey) {
-    setSt('er','⚠️ Necesitás configurar tu API key primero. Tocá la pestaña ⚙️ Config.');
-    document.getElementById('st-wrap').style.display='block';
-    return;
-  }
-
+  if(!apiKey) { setSt('er','⚠️ Configurá tu API key en ⚙️ Config primero.'); document.getElementById('st-wrap').style.display='block'; return; }
   document.getElementById('st-wrap').style.display='block';
   document.getElementById('sc-res').style.display='none';
   setSt('ld','Analizando remito con IA...');
 
   const prompt = `Sos un asistente experto en plantas que lee remitos de viveros en Argentina.
 Analizá la imagen y extraé TODOS los productos con precio de costo y cantidad.
-Además, para cada planta, completá sus atributos de cuidado basándote en tu conocimiento botánico.
+Para cada planta, completá sus atributos de cuidado basándote en tu conocimiento botánico.
 
 REGLAS DE PRECIO: precio unitario si existe; si hay total y cantidad calculá unitario=total/cantidad; sin precio usá 0.
 
@@ -577,37 +557,18 @@ Devolvé SOLO JSON array sin texto ni markdown:
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-opus-4-5',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [
-            {type: 'image', source: {type: 'base64', media_type: 'image/jpeg', data: rb64}},
-            {type: 'text', text: prompt}
-          ]
-        }]
-      })
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({model:'claude-opus-4-5',max_tokens:1000,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:rb64}},{type:'text',text:prompt}]}]})
     });
-
-    if(!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error?.message || 'Error '+res.status);
-    }
-
+    if(!res.ok) { const err=await res.json(); throw new Error(err.error?.message||'Error '+res.status); }
     const data = await res.json();
     const txt = (data.content[0].text||'').replace(/```json|```/g,'').trim();
     const items = JSON.parse(txt);
     if(!Array.isArray(items)||!items.length) throw new Error('Sin productos detectados');
-    scanned = items.map((it,i) => ({id:i, nombre:it.nombre||'Producto '+(i+1), costo:it.costo||0, cantidad:Math.max(1,it.cantidad||1), ubi:it.ubi||null, dif:it.dif||null, riego:it.riego||null, luz:it.luz||null, tox:it.tox||[]}));
-    setSt('ok', '✓ '+scanned.length+' producto'+(scanned.length>1?'s':'')+' detectado'+(scanned.length>1?'s':''));
+    const globalMg = +document.getElementById('r-mg').value||P.md;
+    scanned = items.map((it,i) => ({id:i, nombre:it.nombre||'Producto '+(i+1), costo:it.costo||0, cantidad:Math.max(1,it.cantidad||1), margen:globalMg, ubi:it.ubi||null, dif:it.dif||null, riego:it.riego||null, luz:it.luz||null, tox:it.tox||[]}));
+    setSt('ok','✓ '+scanned.length+' producto'+(scanned.length>1?'s':'')+' detectado'+(scanned.length>1?'s':''));
     renderScanned();
     document.getElementById('sc-res').style.display='block';
   } catch(err) {
@@ -616,22 +577,34 @@ Devolvé SOLO JSON array sin texto ni markdown:
 }
 
 function setSt(type, msg) {
-  const el = document.getElementById('st'); el.className='status '+type;
-  el.innerHTML = type==='ld' ? `<div class="spin"></div><span>${msg}</span>` : msg;
+  const el=document.getElementById('st'); el.className='status '+type;
+  el.innerHTML = type==='ld'?`<div class="spin"></div><span>${msg}</span>`:msg;
+}
+
+// Aplica margen global a todos pero permite override individual
+function applyGlobalMargen() {
+  const mg = +document.getElementById('r-mg').value||P.md;
+  scanned.forEach(it => it.margen = mg);
+  renderScanned();
 }
 
 function renderScanned() {
-  const mg = +document.getElementById('r-mg').value||P.md;
   document.getElementById('sc-list').innerHTML = scanned.map(it => {
-    const r = calc(it.costo, mg);
+    const r = calc(it.costo, it.margen);
     return `<div class="sci">
-      <div class="sci-info">
-        <div class="sci-name">${it.nombre}</div>
-        <div class="sci-sub">×${it.cantidad} unid. · MP: ${r.mp?fmt(r.mp):'sin precio'}</div>
-      </div>
-      <div class="sci-cost">
-        <input type="number" value="${it.costo||''}" placeholder="$costo" onchange="scanned[${it.id}].costo=+this.value;renderScanned()">
+      <div class="sci-top">
+        <div class="sci-info">
+          <input class="sci-name-input" type="text" value="${it.nombre}" onchange="scanned[${it.id}].nombre=this.value" placeholder="Nombre de la planta">
+          <div class="sci-sub">×${it.cantidad} unidades · ${[it.ubi,it.dif,it.riego,it.luz].filter(Boolean).join(' · ')||'sin atributos detectados'}</div>
+        </div>
         <button class="sci-del" onclick="scanned=scanned.filter(x=>x.id!==${it.id});renderScanned();if(!scanned.length)document.getElementById('sc-res').style.display='none'">✕</button>
+      </div>
+      <div class="sci-bottom">
+        <label>Costo $</label>
+        <input class="sci-cost-input" type="number" value="${it.costo||''}" placeholder="0" onchange="scanned[${it.id}].costo=+this.value;renderScanned()">
+        <label>Margen %</label>
+        <input class="sci-mg-input" type="number" value="${it.margen}" onchange="scanned[${it.id}].margen=+this.value;renderScanned()">
+        <span class="sci-precio">${r.mp?fmt(r.mp):'—'}</span>
       </div>
     </div>`;
   }).join('');
@@ -639,14 +612,10 @@ function renderScanned() {
 
 function importAll() {
   if(!scanned.length) return;
-  const mg = +document.getElementById('r-mg').value||P.md;
   let total = 0;
   scanned.forEach(it => {
-    const r = calc(it.costo, mg);
-    for(let i=0; i<it.cantidad; i++) {
-      plants.push({id:Date.now()+Math.random(), nombre:it.nombre, desc:'', costo:it.costo,
-        margen:mg, mp:r.mp, tr:r.tr, ubi:it.ubi||null, dif:it.dif||null, riego:it.riego||null, luz:it.luz||null, tox:it.tox||[], cantidad:it.cantidad});
-    }
+    const r = calc(it.costo, it.margen);
+    for(let i=0; i<it.cantidad; i++) plants.push({id:Date.now()+Math.random(), nombre:it.nombre, desc:'', costo:it.costo, margen:it.margen, mp:r.mp, tr:r.tr, ubi:it.ubi||null, dif:it.dif||null, riego:it.riego||null, luz:it.luz||null, tox:it.tox||[], cantidad:it.cantidad});
     total += it.cantidad;
   });
   savePlants();
@@ -659,20 +628,12 @@ function importAll() {
 function renderLista() {
   const q = (document.getElementById('search').value||'').toLowerCase();
   const map = {};
-  plants.forEach(p => {
-    const k = p.nombre;
-    if(!map[k]) map[k] = {nombre:p.nombre, mp:p.mp, tr:p.tr, ubi:p.ubi, costo:p.costo, margen:p.margen, ids:[],cantidad:0};
-    map[k].ids.push(p.id);
-    map[k].cantidad++;
-  });
-  const groups = Object.values(map).filter(g => !q || g.nombre.toLowerCase().includes(q));
+  plants.forEach(p => { const k=p.nombre; if(!map[k]) map[k]={nombre:p.nombre,mp:p.mp,tr:p.tr,ubi:p.ubi,costo:p.costo,margen:p.margen,cantidad:0}; map[k].cantidad++; });
+  const groups = Object.values(map).filter(g => !q||g.nombre.toLowerCase().includes(q));
   const el = document.getElementById('plants-list');
-  if(!groups.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-ico">🌿</div><h3>${q?'Sin resultados':'Sin plantas'}</h3><p>${q?'Probá con otro término':'Escaneá un remito para agregar plantas'}</p></div>`;
-    return;
-  }
+  if(!groups.length) { el.innerHTML=`<div class="empty"><div class="empty-ico">🌿</div><h3>${q?'Sin resultados':'Sin plantas'}</h3><p>${q?'Probá con otro término':'Escaneá un remito para agregar plantas'}</p></div>`; return; }
   el.innerHTML = groups.map(g => {
-    const dot = g.ubi==='interior'?'i':g.ubi==='exterior'?'e':g.ubi==='ambos'?'a':'n';
+    const dot=g.ubi==='interior'?'i':g.ubi==='exterior'?'e':g.ubi==='ambos'?'a':'n';
     return `<div class="plant-row">
       <div class="plant-dot dot-${dot}"></div>
       <div class="plant-info">
@@ -692,7 +653,7 @@ function renderLista() {
 
 function delGroup(nombre) {
   if(!confirm('¿Eliminar "'+nombre+'"?')) return;
-  plants = plants.filter(p => p.nombre !== nombre);
+  plants=plants.filter(p=>p.nombre!==nombre);
   savePlants(); renderLista(); renderEtiquetas(); toast('Eliminado');
 }
 
@@ -705,30 +666,28 @@ function confirmClearAll() {
 // ── ETIQUETAS ──
 const UBI={interior:{i:'🌙',t:'Interior'},exterior:{i:'☀️',t:'Exterior'},ambos:{i:'☀️🌙',t:'Ext/Int'}};
 const DIF={principiante:{i:'🌱',t:'Principiante'},normal:{i:'🌿',t:'Normal'},experto:{i:'🌳',t:'Experto'}};
-const RIE={poco:{i:'💧',t:'Poco'},moderado:{i:'💧💧',t:'Mod.'},frecuente:{i:'💧💧💧',t:'Frec.'}};
-const LZ={sol:{i:'🔆',t:'Sol'},semisombra:{i:'🌤️',t:'Semisombra'},sombra:{i:'🌑',t:'Sombra'}};
+const RIE={poco:{i:'💧',t:'Poco riego'},moderado:{i:'💧💧',t:'Riego moderado'},frecuente:{i:'💧💧💧',t:'Riego frecuente'}};
+const LZ={sol:{i:'🔆',t:'Sol directo'},semisombra:{i:'🌤️',t:'Semisombra'},sombra:{i:'🌑',t:'Sombra'}};
 
 function renderEtiquetas() {
   const el = document.getElementById('etiq-body');
-  if(!plants.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-ico">🏷️</div><h3>Sin etiquetas</h3><p>Escaneá un remito para generar etiquetas automáticamente.</p></div>`;
-    return;
-  }
-  const map = {};
-  plants.forEach(p => { if(!map[p.nombre]) map[p.nombre]={...p, cant:0}; map[p.nombre].cant++; });
+  if(!plants.length) { el.innerHTML=`<div class="empty"><div class="empty-ico">🏷️</div><h3>Sin etiquetas</h3><p>Escaneá un remito para generar etiquetas automáticamente.</p></div>`; return; }
+  const map={};
+  plants.forEach(p=>{ if(!map[p.nombre]) map[p.nombre]={...p,cant:0}; map[p.nombre].cant++; });
   el.innerHTML = Object.values(map).map(p => {
-    const st = p.ubi==='exterior'?'e':p.ubi==='ambos'?'a':p.ubi==='interior'?'i':'n';
-    const ubi = p.ubi?UBI[p.ubi].i:'';
-    let icons = '';
-    if(p.dif) icons+=`<span class="etiq-icon">${DIF[p.dif].i} ${DIF[p.dif].t}</span>`;
-    if(p.riego) icons+=`<span class="etiq-icon">${RIE[p.riego].i} ${RIE[p.riego].t}</span>`;
-    if(p.luz) icons+=`<span class="etiq-icon">${LZ[p.luz].i} ${LZ[p.luz].t}</span>`;
-    if(p.tox&&p.tox.includes('gatos')) icons+=`<span class="etiq-icon w">🐱 Tóx. gatos</span>`;
-    if(p.tox&&p.tox.includes('perros')) icons+=`<span class="etiq-icon w">🐶 Tóx. perros</span>`;
+    const st=p.ubi==='exterior'?'e':p.ubi==='ambos'?'a':p.ubi==='interior'?'i':'n';
+    const ubi=p.ubi&&UBI[p.ubi]?UBI[p.ubi].i:'';
+    let icons='';
+    if(p.ubi&&UBI[p.ubi]) icons+=`<span class="etiq-icon">${UBI[p.ubi].i} ${UBI[p.ubi].t}</span>`;
+    if(p.dif&&DIF[p.dif]) icons+=`<span class="etiq-icon">${DIF[p.dif].i} ${DIF[p.dif].t}</span>`;
+    if(p.riego&&RIE[p.riego]) icons+=`<span class="etiq-icon">${RIE[p.riego].i} ${RIE[p.riego].t}</span>`;
+    if(p.luz&&LZ[p.luz]) icons+=`<span class="etiq-icon">${LZ[p.luz].i} ${LZ[p.luz].t}</span>`;
+    if(p.tox&&p.tox.includes('gatos')) icons+=`<span class="etiq-icon w">🐱 Tóxica para gatos</span>`;
+    if(p.tox&&p.tox.includes('perros')) icons+=`<span class="etiq-icon w">🐶 Tóxica para perros</span>`;
     return `<div class="etiq-card">
       <div class="etiq-stripe ${st}"></div>
       <div class="etiq-inner">
-        <div class="etiq-top"><div class="etiq-name">${p.nombre}</div><span class="etiq-ubi">${ubi}</span></div>
+        <div class="etiq-top"><div class="etiq-name">${p.nombre}</div></div>
         ${icons?`<div class="etiq-icons">${icons}</div>`:''}
         <div class="etiq-price-row">
           <div><div class="etiq-price-lbl">Precio de lista</div><div class="etiq-price-val">${p.mp?fmt(p.mp):'—'}</div></div>
@@ -742,48 +701,57 @@ function renderEtiquetas() {
 // ── SYNC ──
 async function syncCloud() {
   try {
-    await fetch(PROXY_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({action:'save', sheetId:SHEET_ID, plants})
-    });
+    await fetch(PROXY_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save',sheetId:SHEET_ID,plants})});
     toast('☁️ Guardado en Google Sheets');
-  } catch(e) { toast('Error al guardar'); }
+  } catch(e){toast('Error al guardar');}
 }
 
 async function loadCloud() {
   try {
-    const res = await fetch(PROXY_URL + '?sheetId=' + SHEET_ID);
+    const res = await fetch(PROXY_URL+'?sheetId='+SHEET_ID);
     const rows = await res.json();
     if(!Array.isArray(rows)||rows.length<2){toast('Sin datos en la nube');return;}
-    const headers = rows[0];
-    plants = rows.slice(1).map(r => {
-      const o={}; headers.forEach((h,i)=>o[h]=r[i]);
-      return {id:o.id||Date.now()+Math.random(),nombre:o.nombre||'',desc:o.desc||'',costo:+o.costo||0,margen:+o.margen||0,mp:+o.mp||0,tr:+o.tr||0,ubi:o.ubi||null,dif:o.dif||null,riego:o.riego||null,luz:o.luz||null,tox:o.tox?o.tox.split(',').filter(Boolean):[],cantidad:+o.cantidad||1};
-    });
+    const headers=rows[0];
+    plants=rows.slice(1).map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]);return{id:o.id||Date.now()+Math.random(),nombre:o.nombre||'',desc:o.desc||'',costo:+o.costo||0,margen:+o.margen||0,mp:+o.mp||0,tr:+o.tr||0,ubi:o.ubi||null,dif:o.dif||null,riego:o.riego||null,luz:o.luz||null,tox:o.tox?o.tox.split(',').filter(Boolean):[],cantidad:+o.cantidad||1};});
     savePlants(); renderLista(); renderEtiquetas();
     toast('✓ '+plants.length+' plantas cargadas');
-  } catch(e) { toast('Error al cargar'); }
+  } catch(e){toast('Error al cargar');}
 }
 
 // ── SHARE ──
 function openShare() { document.getElementById('share-overlay').classList.add('open'); }
 function closeShare(e) { if(e.target===document.getElementById('share-overlay')) document.getElementById('share-overlay').classList.remove('open'); }
+
 function shareWhatsApp() {
-  const seen = {};
-  let txt = '🏷️ *Lista de precios LyL Macetas*\n';
-  plants.forEach(p => {
+  if(!plants.length){toast('Sin plantas para compartir');return;}
+  const seen={};
+  let txt='🌿 *Lista de precios — LyL Macetas*\n';
+  txt+='─────────────────────\n';
+  plants.forEach(p=>{
     if(seen[p.nombre]) return; seen[p.nombre]=true;
-    const cant = plants.filter(x=>x.nombre===p.nombre).length;
-    txt += `\n🌿 *${p.nombre}*\n   💰 Lista: ${p.mp?fmt(p.mp):'—'}  |  Transf: ${p.tr?fmt(p.tr):'—'}\n   📦 Cantidad: ${cant}\n`;
+    const cant=plants.filter(x=>x.nombre===p.nombre).length;
+    const ubiTxt=p.ubi&&UBI[p.ubi]?UBI[p.ubi].i+' '+UBI[p.ubi].t:'';
+    const riegoTxt=p.riego&&RIE[p.riego]?RIE[p.riego].i+' '+RIE[p.riego].t:'';
+    const luzTxt=p.luz&&LZ[p.luz]?LZ[p.luz].i+' '+LZ[p.luz].t:'';
+    const difTxt=p.dif&&DIF[p.dif]?DIF[p.dif].i+' '+DIF[p.dif].t:'';
+    txt+='\n🌱 *'+p.nombre+'*\n';
+    txt+='   💰 Precio lista: '+(p.mp?fmt(p.mp):'—')+'\n';
+    if(ubiTxt) txt+='   '+ubiTxt+'\n';
+    if(luzTxt) txt+='   '+luzTxt+'\n';
+    if(riegoTxt) txt+='   '+riegoTxt+'\n';
+    if(difTxt) txt+='   '+difTxt+'\n';
+    if(p.tox&&p.tox.length) txt+='   ⚠️ Tóxica para: '+p.tox.join(' y ')+'\n';
+    txt+='   📦 Cantidad: '+cant+'\n';
+    txt+='─────────────────────\n';
   });
+  document.getElementById('share-overlay').classList.remove('open');
   window.open('https://wa.me/?text='+encodeURIComponent(txt));
-  document.getElementById('share-overlay').classList.remove('open');
 }
-async function shareNative() {
+
+function printEtiquetas() {
   document.getElementById('share-overlay').classList.remove('open');
-  if(navigator.share) { try { await navigator.share({title:'LyL Macetas'}); } catch(e) { window.print(); } }
-  else window.print();
+  goView('etiquetas');
+  setTimeout(()=>window.print(), 300);
 }
 
 // ── EXPORT ──
@@ -801,7 +769,7 @@ function exportCSV() {
   toast('✓ Descargado');
 }
 
-function savePlants() { localStorage.setItem('lyl_p', JSON.stringify(plants)); }
+function savePlants(){localStorage.setItem('lyl_p',JSON.stringify(plants));}
 
 let tt;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2500);}
