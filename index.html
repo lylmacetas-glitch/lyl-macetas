@@ -152,14 +152,20 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 .key-no{color:var(--w);}
 
 /* ── PRINT ── */
+#print-area{display:none;}
 @media print{
-  .hdr,.nav,.lista-hdr,.lista-footer,.etiq-footer,.share-overlay,.toast,.app{display:block!important;box-shadow:none!important;}
-  .views,.view{position:static!important;display:block!important;overflow:visible!important;height:auto!important;}
-  .view:not(#v-etiquetas){display:none!important;}
-  #v-etiquetas{display:block!important;}
-  .etiq-body{display:block!important;}
-  .etiq-card{break-inside:avoid;page-break-inside:avoid;box-shadow:none!important;border:1px solid #ccc;margin-bottom:10px;width:9cm;display:inline-block;vertical-align:top;margin-right:5mm;}
-  .etiq-footer{display:none!important;}
+  body > *{display:none!important;}
+  #print-area{display:block!important;padding:10mm;}
+  .p-etiq-card{border:1px solid #ccc;border-radius:8px;padding:10px 14px;margin-bottom:8px;page-break-inside:avoid;break-inside:avoid;width:9cm;}
+  .p-etiq-stripe{height:5px;border-radius:3px;margin-bottom:8px;}
+  .p-etiq-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#252520;margin-bottom:6px;}
+  .p-etiq-icons{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
+  .p-etiq-icon{background:#e8f0e9;border-radius:20px;padding:3px 8px;font-size:10px;color:#3d5c40;}
+  .p-etiq-icon.w{background:#fdf0f0;color:#b83232;}
+  .p-etiq-price-row{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid #ede6db;padding-top:8px;}
+  .p-etiq-price-lbl{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#6b6b62;margin-bottom:2px;}
+  .p-etiq-price-val{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#3d5c40;}
+  .p-etiq-brand{font-family:'Cormorant Garamond',serif;font-size:9px;color:#7a9e7e;letter-spacing:.12em;text-transform:uppercase;}
 }
 </style>
 </head>
@@ -376,6 +382,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cr);colo
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="print-area"></div>
 
 <script>
 let P = JSON.parse(localStorage.getItem('lyl_cfg')||'null')||{qr:6.29,ib:3,dt:10,md:50};
@@ -691,7 +698,7 @@ function renderEtiquetas() {
         ${icons?`<div class="etiq-icons">${icons}</div>`:''}
         <div class="etiq-price-row">
           <div><div class="etiq-price-lbl">Precio de lista</div><div class="etiq-price-val">${p.mp?fmt(p.mp):'—'}</div></div>
-          <div style="text-align:right"><div class="etiq-brand">LyL Macetas</div><div class="etiq-cant-badge" style="margin-top:4px">×${p.cant} etiqueta${p.cant>1?'s':''}</div></div>
+          <div style="text-align:right"><div class="etiq-brand">LyL Macetas</div></div>
         </div>
       </div>
     </div>`;
@@ -700,8 +707,10 @@ function renderEtiquetas() {
 
 // ── SYNC ──
 async function syncCloud() {
+  if(!plants.length){toast('Sin datos para guardar');return;}
+  const plantsCopy = JSON.parse(JSON.stringify(plants)); // guardar copia antes
   try {
-    await fetch(PROXY_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save',sheetId:SHEET_ID,plants})});
+    fetch(PROXY_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save',sheetId:SHEET_ID,plants:plantsCopy})});
     toast('☁️ Guardado en Google Sheets');
   } catch(e){toast('Error al guardar');}
 }
@@ -750,8 +759,33 @@ function shareWhatsApp() {
 
 function printEtiquetas() {
   document.getElementById('share-overlay').classList.remove('open');
-  goView('etiquetas');
-  setTimeout(()=>window.print(), 300);
+  if(!plants.length){toast('Sin etiquetas para imprimir');return;}
+  const map={};
+  plants.forEach(p=>{ if(!map[p.nombre]) map[p.nombre]={...p,cant:0}; map[p.nombre].cant++; });
+  let html='';
+  Object.values(map).forEach(p=>{
+    const st=p.ubi==='exterior'?'linear-gradient(90deg,#a0521e,#d4854a)':p.ubi==='ambos'?'linear-gradient(90deg,#3d5c40,#a0521e)':p.ubi==='interior'?'linear-gradient(90deg,#3d5c40,#7a9e7e)':'#ede6db';
+    let icons='';
+    if(p.ubi&&UBI[p.ubi]) icons+=`<span class="p-etiq-icon">${UBI[p.ubi].i} ${UBI[p.ubi].t}</span>`;
+    if(p.dif&&DIF[p.dif]) icons+=`<span class="p-etiq-icon">${DIF[p.dif].i} ${DIF[p.dif].t}</span>`;
+    if(p.riego&&RIE[p.riego]) icons+=`<span class="p-etiq-icon">${RIE[p.riego].i} ${RIE[p.riego].t}</span>`;
+    if(p.luz&&LZ[p.luz]) icons+=`<span class="p-etiq-icon">${LZ[p.luz].i} ${LZ[p.luz].t}</span>`;
+    if(p.tox&&p.tox.includes('gatos')) icons+=`<span class="p-etiq-icon w">🐱 Tóxica para gatos</span>`;
+    if(p.tox&&p.tox.includes('perros')) icons+=`<span class="p-etiq-icon w">🐶 Tóxica para perros</span>`;
+    const card=`<div class="p-etiq-card">
+      <div class="p-etiq-stripe" style="background:${st}"></div>
+      <div class="p-etiq-name">${p.nombre}</div>
+      ${icons?`<div class="p-etiq-icons">${icons}</div>`:''}
+      <div class="p-etiq-price-row">
+        <div><div class="p-etiq-price-lbl">Precio de lista</div><div class="p-etiq-price-val">${p.mp?fmt(p.mp):'—'}</div></div>
+        <div style="text-align:right"><div class="p-etiq-brand">LyL Macetas</div></div>
+      </div>
+    </div>`;
+    // Repetir la etiqueta la cantidad de veces que corresponde
+    for(let i=0;i<p.cant;i++) html+=card;
+  });
+  document.getElementById('print-area').innerHTML=html;
+  setTimeout(()=>window.print(), 200);
 }
 
 // ── EXPORT ──
